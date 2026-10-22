@@ -1,86 +1,109 @@
-
 package com.miniopus.admin;
 
-import android.app.Activity;
 import android.Manifest;
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.webkit.WebSettings;
-import android.webkit.WebResourceRequest;
-import android.util.Log;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends Activity {
-
     private WebView webView;
+    private LinearLayout root;
+    private TextView tokenView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= 33
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.POST_NOTIFICATIONS},
-                    1001
-            );
+        if (Build.VERSION.SDK_INT >= 33 &&
+                checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(
+                    new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
         }
 
-        webView = new WebView(this);
+        root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.VERTICAL);
 
+        TextView heading = new TextView(this);
+        heading.setText("Miniopus — Firebase setup");
+        heading.setTextSize(20);
+        heading.setPadding(16, 16, 16, 8);
+        root.addView(heading);
+
+        tokenView = new TextView(this);
+        tokenView.setText("Getting Firebase token…");
+        tokenView.setTextIsSelectable(true);
+        tokenView.setPadding(16, 12, 16, 12);
+        root.addView(tokenView);
+
+        Button copyButton = new Button(this);
+        copyButton.setText("Copy Firebase token");
+        root.addView(copyButton);
+
+        Button openAdmin = new Button(this);
+        openAdmin.setText("Open Miniopus Admin");
+        root.addView(openAdmin);
+
+        webView = new WebView(this);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
-
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(
-                    WebView view,
-                    WebResourceRequest request) {
-
+                    WebView view, WebResourceRequest request) {
                 String host = request.getUrl().getHost();
-
-                return host == null
-                        || !host.equals("miniopus.vercel.app");
+                return host == null || !host.equals("miniopus.vercel.app");
             }
         });
+
+        openAdmin.setOnClickListener(v -> {
+            root.removeView(webView);
+            root.addView(webView, new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, 0, 1));
+            webView.loadUrl("https://miniopus.vercel.app/admin.html");
+        });
+
+        copyButton.setOnClickListener(v -> {
+            String token = tokenView.getText().toString();
+            if (token.startsWith("Getting") || token.startsWith("Token unavailable")) {
+                Toast.makeText(this, "Token is not ready yet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            ClipboardManager clipboard =
+                    (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("FCM token", token));
+            Toast.makeText(this, "Token copied", Toast.LENGTH_SHORT).show();
+        });
+
+        setContentView(root);
 
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Log.d("MINIOPUS_FCM", "TOKEN: " + task.getResult());
+                        tokenView.setText(task.getResult());
                     } else {
-                        Log.e("MINIOPUS_FCM", "Token retrieval failed", task.getException());
+                        tokenView.setText("Token unavailable: " +
+                                (task.getException() == null
+                                        ? "unknown error"
+                                        : task.getException().getMessage()));
                     }
                 });
-
-        if (android.os.Build.VERSION.SDK_INT >= 33 &&
-                checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS)
-                != android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(
-                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1001);
-        }
-
-        setContentView(webView);
-
-        webView.loadUrl(
-                "https://miniopus.vercel.app/admin.html"
-        );
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (webView != null && webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
     }
 }
