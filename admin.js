@@ -1,7 +1,7 @@
 const $ = (s) => document.querySelector(s);
 const money = n => new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(n||0));
 const dateFmt = s => new Date(s).toLocaleDateString('en-IN',{day:'numeric',month:'short'});
-let password = sessionStorage.getItem('stainrol_admin_password') || '';
+let password = localStorage.getItem('stainrol_admin_password') || '';
 let currentRange = '30d';
 function showLogin(){ $('#loginCard').classList.remove('hidden'); $('#dashboard').classList.add('hidden'); $('#logout').classList.add('hidden'); }
 function showDashboard(){ $('#loginCard').classList.add('hidden'); $('#dashboard').classList.remove('hidden'); $('#logout').classList.remove('hidden'); }
@@ -12,7 +12,7 @@ async function load(range=currentRange){
   try{
     const r=await fetch(`/api/admin-orders?range=${encodeURIComponent(range)}`,{headers:{'x-admin-password':password}});
     const data=await r.json().catch(()=>({}));
-    if(r.status===401){sessionStorage.removeItem('stainrol_admin_password');password='';showLogin();$('#loginError').textContent='Password was not accepted.';return;}
+    if(r.status===401){localStorage.removeItem('stainrol_admin_password');password='';showLogin();$('#loginError').textContent='Password was not accepted.';return;}
     if(!r.ok){showDashboard();$('#notice').textContent=data.error||'Dashboard could not load.';$('#notice').classList.remove('hidden');clearData();return;}
     showDashboard();render(data);$('#updatedAt').textContent=`Updated ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
   }catch(e){showDashboard();$('#notice').textContent='Could not connect. Check your connection and try again.';$('#notice').classList.remove('hidden');}
@@ -28,8 +28,8 @@ if(!shown.length){$('#chart').innerHTML='<div class="no-data">No sales recorded 
 $('#chartStart').textContent=daily.length?dateFmt(daily[0].date):'';$('#chartEnd').textContent=daily.length?dateFmt(daily[daily.length-1].date):'';
 const rows=$('#orderRows');rows.innerHTML='';(data.orders||[]).slice(0,100).forEach(o=>{const tr=document.createElement('tr');const values=[['order-id',o.order_id||'—'],['',dateFmt(o.created_at)],['',`${o.quantity||1} unit${Number(o.quantity||1)===1?'':'s'}`],['',o.payment_method],['status',o.order_status||'PLACED']];values.forEach((v,i)=>{const td=document.createElement('td');if(i===3){const badge=document.createElement('span');badge.className='payment '+(o.payment_method==='PREPAID'?'prepaid':'cod');badge.textContent=o.payment_method==='PREPAID'?'Prepaid':'COD';td.append(badge);}else{td.className=v[0];td.textContent=v[1];}tr.append(td);});const amount=document.createElement('td');amount.className='right';amount.textContent=money(o.total_amount);tr.append(amount);rows.append(tr);});$('#orderCountLabel').textContent=`${(data.orders||[]).length} orders`;$('#empty').classList.toggle('hidden',!!(data.orders||[]).length);
 }
-$('#loginForm').addEventListener('submit',e=>{e.preventDefault();password=$('#password').value;sessionStorage.setItem('stainrol_admin_password',password);load(currentRange);});
-$('#logout').addEventListener('click',()=>{sessionStorage.removeItem('stainrol_admin_password');password='';$('#password').value='';showLogin();});
+$('#loginForm').addEventListener('submit',e=>{e.preventDefault();password=$('#password').value;localStorage.setItem('stainrol_admin_password',password);load(currentRange);});
+$('#logout').addEventListener('click',()=>{localStorage.removeItem('stainrol_admin_password');password='';$('#password').value='';showLogin();});
 document.querySelectorAll('[data-range]').forEach(b=>b.addEventListener('click',()=>load(b.dataset.range)));
 
 async function loadProductSettings(){
@@ -37,7 +37,7 @@ async function loadProductSettings(){
   try {
     const r=await fetch('/api/admin-settings',{headers:{'x-admin-password':password}});
     const data=await r.json().catch(()=>({}));
-    if(r.status===401){sessionStorage.removeItem('stainrol_admin_password');password='';showLogin();throw new Error('Password was not accepted.');}
+    if(r.status===401){localStorage.removeItem('stainrol_admin_password');password='';showLogin();throw new Error('Password was not accepted.');}
     if(!r.ok) throw new Error(data.error||'Could not load product settings.');
     const p=data.product||{};
     $('#psName').value=p.productName||'StainRol Stain Remover Roll-On (50 ml) for Clothes | Instant Spot Cleaner';
@@ -55,7 +55,7 @@ $('#productForm').addEventListener('submit',async e=>{
   e.preventDefault(); const message=$('#productMessage'),button=$('#saveProduct');
   message.textContent='Saving…';message.classList.remove('error');button.disabled=true;
   const product={productName:$('#psName').value,description:$('#psDescription').value,imageUrl:$('#psImage').value,price:Number($('#psPrice').value),mrp:Number($('#psMrp').value),rating:Number($('#psRating').value),reviewCount:Number($('#psReviewCount').value),reviews:[1,2,3].map(i=>({title:$('#psReview'+i+'Title').value,body:$('#psReview'+i+'Body').value}))};
-  try{const r=await fetch('/api/admin-settings',{method:'POST',headers:{'content-type':'application/json','x-admin-password':password},body:JSON.stringify({action:'save-product',product})});const data=await r.json().catch(()=>({}));if(r.status===401){sessionStorage.removeItem('stainrol_admin_password');password='';showLogin();throw new Error('Password was not accepted. Please sign in again.');}if(!r.ok)throw new Error(data.error||'Save failed.');message.textContent='Saved. Refresh the storefront to see changes.';updatePhotoPreview();}catch(err){message.textContent=err.message;message.classList.add('error');}finally{button.disabled=false;}
+  try{const r=await fetch('/api/admin-settings',{method:'POST',headers:{'content-type':'application/json','x-admin-password':password},body:JSON.stringify({action:'save-product',product})});const data=await r.json().catch(()=>({}));if(r.status===401){localStorage.removeItem('stainrol_admin_password');password='';showLogin();throw new Error('Password was not accepted. Please sign in again.');}if(!r.ok)throw new Error(data.error||'Save failed.');message.textContent='Saved. Refresh the storefront to see changes.';updatePhotoPreview();}catch(err){message.textContent=err.message;message.classList.add('error');}finally{button.disabled=false;}
 });
 
 if(password){load();loadProductSettings();}else showLogin();
