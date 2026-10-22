@@ -51,10 +51,10 @@ jobs:
 
       - name: Restore Firebase configuration
         env:
-          FIREBASE_CONFIG_BASE64: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_BASE64 }}
+          FIREBASE_CONFIG_JSON: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON }}
         run: |
-          test -n "$FIREBASE_CONFIG_BASE64" || { echo "Firebase secret is missing"; exit 1; }
-          printf '%s' "$FIREBASE_CONFIG_BASE64" | base64 --decode > android-app/app/google-services.json
+          test -n "$FIREBASE_CONFIG_JSON" || { echo "Firebase secret is missing"; exit 1; }
+          printf '%s' "$FIREBASE_CONFIG_JSON" > android-app/app/google-services.json
           python -c "import json; json.load(open('android-app/app/google-services.json'))"
           echo "Firebase configuration restored and validated."
 
