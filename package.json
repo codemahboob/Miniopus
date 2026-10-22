@@ -1,0 +1,8 @@
+{
+  "name": "single-page-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Lightweight single-product store. Static page + one Vercel function that emails each order via Resend.",
+  "scripts": { "dev": "vercel dev" },
+  "engines": { "node": ">=18" }
+}

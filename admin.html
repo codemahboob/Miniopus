@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Sales Dashboard · StainRol</title><link rel="stylesheet" href="admin.css"></head>
+<body><div class="shell">
+  <aside class="sidebar"><a class="brand" href="/" aria-label="StainRol store"><span class="brand-mark">S</span><span>StainRol<small>STORE DASHBOARD</small></span></a><nav><a class="active" href="#overview"><span>▦</span> Overview</a><a href="#productSettings"><span>✎</span> Product settings</a><a href="#deodapSetup"><span>↔</span> DeoDap API setup</a><a href="/" class="store-link"><span>↗</span> View store</a></nav><div class="side-foot">Private sales overview</div></aside>
+  <main class="main"><header class="topbar"><div><p class="eyebrow">OVERVIEW</p><h1>Sales dashboard</h1><p class="sub">A clear view of your store performance.</p></div><button id="logout" class="quiet hidden">Log out</button></header>
+    <section id="loginCard" class="login-card"><div class="login-icon">↗</div><h2>Admin access</h2><p>Enter your dashboard password to view order and revenue data.</p><form id="loginForm"><label for="password">Dashboard password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Enter password"><button class="primary" type="submit">Open dashboard</button><p id="loginError" class="error"></p></form></section>
+    <section id="dashboard" class="hidden">
+      <div id="overview">
+      <div class="toolbar"><div><span class="live-dot"></span><span id="updatedAt">Sales summary</span></div><div class="range-tabs" role="group" aria-label="Date range"><button data-range="today">Today</button><button data-range="7d">7 days</button><button data-range="30d" class="selected">30 days</button><button data-range="90d">90 days</button><button data-range="365d">1 year</button></div></div>
+      <div id="notice" class="notice hidden"></div>
+      <div class="metrics"><article class="metric"><div class="metric-top"><span>Total revenue</span><span class="metric-icon mint">₹</span></div><strong id="revenue">₹0</strong><small id="aov">₹0 average order value</small></article><article class="metric"><div class="metric-top"><span>Total orders</span><span class="metric-icon blue">↗</span></div><strong id="orders">0</strong><small id="ordersHint">Orders in selected period</small></article><article class="metric"><div class="metric-top"><span>Cash on delivery</span><span class="metric-icon amber">₹</span></div><strong id="codRevenue">₹0</strong><small id="codCount">0 COD orders</small></article><article class="metric"><div class="metric-top"><span>Prepaid</span><span class="metric-icon violet">✓</span></div><strong id="prepaidRevenue">₹0</strong><small id="prepaidCount">0 prepaid orders</small></article></div>
+      <section class="panel chart-panel"><div class="panel-heading"><div><h2>Sales trend</h2><p>Daily revenue for the selected period</p></div><span class="legend"><i></i> Revenue</span></div><div id="chart" class="chart" aria-label="Daily revenue chart"></div><div class="chart-foot"><span id="chartStart"></span><span id="chartEnd"></span></div></section>
+      <section class="panel"><div class="panel-heading"><div><h2>Recent orders</h2><p>Latest orders received in this period</p></div><span id="orderCountLabel" class="count-pill">0 orders</span></div><div class="table-wrap"><table><thead><tr><th>Order</th><th>Date</th><th>Quantity</th><th>Payment</th><th>Status</th><th class="right">Amount</th></tr></thead><tbody id="orderRows"></tbody></table><div id="empty" class="empty hidden"><span>▤</span><strong>No orders in this period</strong><p>New orders will appear here once dashboard database storage is configured.</p></div></div></section>
+      <p class="footnote">Revenue reflects order totals recorded by the store. Prepaid orders are not proof of successful payment; verify payment in your UPI/payment account before shipping.</p>
+      <section class="panel product-settings" id="productSettings">
+        <div class="panel-heading"><div><h2>Product page settings</h2><p>Change the product information shown on your storefront.</p></div><span class="integration-status"><i></i> Storefront controls</span></div>
+        <form id="productForm">
+          <div class="settings-grid">
+            <label>Product name<input id="psName" maxlength="180" required></label>
+            <label>Product photo URL<input id="psImage" type="text" placeholder="https://... or /images/photo-1.jpg" required></label>
+            <label class="wide">Product description<textarea id="psDescription" rows="4" maxlength="3000" required></textarea></label>
+            <label>Selling price (₹)<input id="psPrice" type="number" min="1" max="1000000" step="1" required></label>
+            <label>MRP (₹)<input id="psMrp" type="number" min="1" max="1000000" step="1" required></label>
+            <label>Rating (0–5)<input id="psRating" type="number" min="0" max="5" step="0.1" required></label>
+            <label>Ratings &amp; reviews count<input id="psReviewCount" type="number" min="0" max="100000000" step="1" required></label>
+            <label>Review 1 title<input id="psReview1Title" maxlength="120"></label>
+            <label class="wide">Review 1 text<textarea id="psReview1Body" rows="2" maxlength="1000"></textarea></label>
+            <label>Review 2 title<input id="psReview2Title" maxlength="120"></label>
+            <label class="wide">Review 2 text<textarea id="psReview2Body" rows="2" maxlength="1000"></textarea></label>
+            <label>Review 3 title<input id="psReview3Title" maxlength="120"></label>
+            <label class="wide">Review 3 text<textarea id="psReview3Body" rows="2" maxlength="1000"></textarea></label>
+          </div>
+          <div class="settings-preview"><img id="psPreview" src="images/photo-1.jpg" alt="Product preview"><span>Photo preview</span></div>
+          <div class="integration-actions"><button class="primary" type="submit" id="saveProduct">Save product settings</button><span id="productMessage" class="settings-message" role="status"></span></div>
+          <p class="integration-footnote">Photo field accepts a direct image URL or a path such as /images/photo-1.jpg. Use genuine customer reviews and accurate rating/count information. Changes are stored in Supabase and loaded by the public product page.</p>
+        </form>
+      </section>
+    </section>
+  </main></div><script src="admin.js"></script></body></html>
