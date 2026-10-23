@@ -285,16 +285,87 @@ $("#placeBtn").onclick = async () => {
 
 // ----- order placed -----
 function showPlaced(o) {
-  $("#okId").textContent = o.orderId;
-  $("#okDate").textContent = o.deliveryDate;
-  const amt = inr(o.total);
+  const setText = (id, value) => {
+    const el = $("#" + id);
+    if (el) el.textContent = value == null ? "" : String(value);
+  };
+
+  setText("okId", o.id || o.orderId || "Confirmed");
+  setText("okDate", o.deliveryDate || "Delivery date will be confirmed");
+  const amt = Number(o.total || 0);
   if (o.prepaid) {
-    $("#okH").textContent = "Payment successful";
-    $("#okPay").textContent = `Your Razorpay payment of ${amt} has been verified. Your order is confirmed.`;
+    setText("okH", "Payment successful!");
+    setText("okPay", `Your Razorpay payment of ₹${amt} has been verified. Your order is confirmed.`);
     $("#okUpi").hidden = true;
   } else {
-    $("#okPay").textContent = `Pay ${amt} in cash when your order is delivered.`;
+    setText("okPay", `Pay ₹${amt} in cash when your order is delivered.`);
     $("#okUpi").hidden = true;
+  }
+
+  // Show a white full-screen animation first, then return to order details.
+  let screen = document.getElementById("order-success-animation");
+  if (!screen) {
+    screen = document.createElement("div");
+    screen.id = "order-success-animation";
+    screen.innerHTML = '<div id="order-success-lottie"></div><h2>Order placed successfully!</h2><p>Your order is being confirmed</p>';
+    document.body.appendChild(screen);
+  }
+  screen.style.display = "flex";
+  screen.style.position = "fixed";
+  screen.style.inset = "0";
+  screen.style.zIndex = "99999";
+  screen.style.background = "#fff";
+  screen.style.color = "#171717";
+  screen.style.flexDirection = "column";
+  screen.style.alignItems = "center";
+  screen.style.justifyContent = "center";
+  screen.style.textAlign = "center";
+  screen.style.fontFamily = "system-ui, sans-serif";
+  screen.style.padding = "24px";
+  screen.style.boxSizing = "border-box";
+  screen.querySelector("#order-success-lottie").style.width = "min(80vw, 340px)";
+  screen.querySelector("#order-success-lottie").style.height = "min(80vw, 340px)";
+
+  const reveal = () => {
+    screen.style.display = "none";
+    const placedSection = document.getElementById("p-placed");
+    if (placedSection) placedSection.scrollIntoView({block:"start"});
+  };
+
+  const runAnimation = () => {
+    if (window.lottie && window.lottie.loadAnimation) {
+      try {
+        const player = window.lottie.loadAnimation({
+          container: screen.querySelector("#order-success-lottie"),
+          renderer: "svg",
+          loop: false,
+          autoplay: true,
+          path: "/animations/order-success.json"
+        });
+        const fallback = setTimeout(reveal, 4500);
+        player.addEventListener("complete", () => {
+          clearTimeout(fallback);
+          setTimeout(reveal, 700);
+        });
+        player.addEventListener("data_failed", () => {
+          clearTimeout(fallback);
+          setTimeout(reveal, 1800);
+        });
+        return;
+      } catch (_) {}
+    }
+    setTimeout(reveal, 2200);
+  };
+
+  if (!document.getElementById("lottie-player-script")) {
+    const script = document.createElement("script");
+    script.id = "lottie-player-script";
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js";
+    script.onload = runAnimation;
+    script.onerror = () => setTimeout(reveal, 2200);
+    document.head.appendChild(script);
+  } else {
+    runAnimation();
   }
 }
 
