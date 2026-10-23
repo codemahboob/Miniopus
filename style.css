@@ -36,7 +36,17 @@ b,strong{font-weight:700}
 .gallery{position:relative;background:#fff;border-radius:0 0 12px 12px;overflow:hidden}
 .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;background:#f0f0f0}
 .slides::-webkit-scrollbar{display:none}
-.slides img{flex:0 0 100%;width:100%;aspect-ratio:390/576;object-fit:contain;scroll-snap-align:center;background:#f0f0f0}
+.slides img{
+  flex:0 0 100%;
+  width:100%;
+  aspect-ratio:4/5;
+  height:auto;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+  scroll-snap-align:center;
+  background:#fff
+}
 .fab{position:absolute;top:16px;right:16px;display:grid;gap:12px}
 .fab button{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.88);display:grid;place-items:center;color:var(--ink)}
 .fab svg{width:24px;height:24px}
