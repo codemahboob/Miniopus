@@ -75,7 +75,7 @@ function render() {
   $("#bTot").textContent = inr(total);
   $("#pMrp").textContent = inr(mrp);
   $("#pTot").textContent = inr(total);
-  $(".payamt").forEach((e) => (e.textContent = inr(total)));
+  $$(".payamt").forEach((e) => (e.textContent = inr(total)));
   $("#payTotalAmount").textContent = inr(total);
   $("#payBreakMrp").textContent = inr(mrp);
   $("#payBreakDiscount").textContent = "− " + inr(pay === "RAZORPAY" ? Math.max(0, subtotal - total) : 0);
@@ -236,7 +236,7 @@ $$('input[name="pay"]').forEach((r) =>
 function renderPayment() {
   $("#payErr").textContent = "";
   if (STORE.codEnabled !== true && pay === "COD") pay = "RAZORPAY";
-  $('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
+  $$('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
   $("#optPrepaid").classList.toggle("on", pay === "RAZORPAY");
   $("#optCod").classList.toggle("on", pay === "COD" && STORE.codEnabled === true);
   $("#optCod").classList.toggle("is-disabled", STORE.codEnabled !== true);

@@ -277,56 +277,29 @@
 
   <!-- STEP 3 · Payment -->
   <section class="pane" id="p-payment" hidden>
-    <div class="pay-total-wrap">
-      <button class="pay-total" type="button" id="totalToggle" aria-expanded="false" aria-controls="paymentPriceDetails">
-        <span>Total Amount <svg class="pay-chevron"><use href="#i-chev"/></svg></span>
-        <b id="payTotalAmount"></b>
-      </button>
-      <div class="pay-total-details" id="paymentPriceDetails" hidden>
-        <div><span>Price</span><b id="payBreakMrp"></b></div>
-        <div><span>Discount</span><b id="payBreakDiscount"></b></div>
-        <div><span>Delivery</span><b>Free</b></div>
-        <div class="pay-total-final"><span>Payable amount</span><b id="payBreakTotal"></b></div>
-      </div>
-    </div>
+    <h3 class="payh">Choose payment method</h3>
 
-    <div class="pay-cashback">
-      <div><b>5% OFF</b><span>Save more when you pay online</span></div>
-      <span class="cashback-mark">UPI</span>
-    </div>
-
-    <button class="recommended-toggle" type="button" id="recommendedToggle" aria-expanded="false" aria-controls="recommendedDetails">
-      <span class="recommended-icon">♡</span><b>Recommended for You</b><svg class="pay-chevron"><use href="#i-chev"/></svg>
-    </button>
-    <div class="recommended-details" id="recommendedDetails" hidden>
-      UPI is selected as the recommended payment method. Your 5% online-payment discount is included in the payable amount.
-    </div>
-
-    <label class="popt upi-option on" id="optPrepaid">
+    <label class="popt" id="optPrepaid">
       <input type="radio" name="pay" value="RAZORPAY" checked>
       <span class="pi"><svg><use href="#i-upi"/></svg></span>
-      <span class="pt">
-        <b>UPI</b>
-        <small>Pay by any UPI app</small>
-        <em class="payment-offer">5% discount applied • Secure payment via Razorpay</em>
-      </span>
+      <span class="pt"><b>UPI — Get 5% off</b><small>Pay securely using UPI via Razorpay</small></span>
       <span class="rad" aria-hidden="true"></span>
-      <span class="pd">Secure UPI checkout via Razorpay. Your order is confirmed after payment verification. Pay <b class="payamt"></b>.</span>
+      <span class="pd">Secure online checkout. Your order is confirmed after Razorpay payment verification. Pay <b class="payamt"></b>.</span>
     </label>
 
-    <label class="popt cod-option is-disabled" id="optCod" aria-disabled="true">
+    <label class="popt is-disabled" id="optCod" aria-disabled="true">
       <input type="radio" name="pay" value="COD" disabled>
       <span class="pi"><svg><use href="#i-cash"/></svg></span>
       <span class="pt"><b>Cash on Delivery</b><small>Currently Unavailable</small></span>
       <span class="rad" aria-hidden="true"></span>
-      <span class="pd">Cash on Delivery is currently unavailable.</span>
+      <span class="pd">Keep <b class="payamt"></b> ready in cash for the delivery partner.</span>
     </label>
 
     <p class="err" id="payErr" role="alert"></p>
     <div class="gap"></div>
     <div class="bar bar2">
       <div class="bt"><s id="pMrp"></s><b id="pTot"></b><span class="muted small">Free delivery</span></div>
-      <button class="btn-y" type="button" id="placeBtn">Pay now</button>
+      <button class="btn-y" type="button" id="placeBtn">Place Order</button>
     </div>
   </section>
 
