@@ -276,18 +276,32 @@
   </section>
 
   <!-- STEP 3 · Payment -->
-  <section class="pane" id="p-payment" hidden>
-    <div class="card paytot"><span>Total Amount</span><b id="payTot"></b></div>
-    <h3 class="payh">Choose payment method</h3>
+  <section class="pane payment-pane" id="p-payment" hidden>
+    <div class="pay-secure-head">
+      <div><small>Step 3 of 3</small><h2>Payments</h2></div>
+      <span class="secure-pill">♙ 100% Secure</span>
+    </div>
 
+    <div class="card paytot">
+      <span>Total Amount</span>
+      <b id="payTot"></b>
+    </div>
+
+    <div class="pay-offer">
+      <b>5% OFF</b>
+      <span>Save more when you pay online</span>
+    </div>
+
+    <h3 class="payh">Recommended for You</h3>
     <label class="popt" id="optPrepaid">
       <input type="radio" name="pay" value="RAZORPAY">
       <span class="pi"><svg><use href="#i-upi"/></svg></span>
-      <span class="pt"><b>Pay Online — Get 5% off</b><small>UPI, cards, net banking and supported wallets via Razorpay</small></span>
+      <span class="pt"><b>UPI, Credit / Debit Card</b><small>Pay by UPI app, cards or net banking via Razorpay</small></span>
       <span class="rad" aria-hidden="true"></span>
-      <span class="pd">Secure online checkout. Your order is confirmed after Razorpay payment verification. Pay <b class="payamt"></b>.</span>
+      <span class="pd">Get 5% off with online payment. Secure checkout via Razorpay. Pay <b class="payamt"></b>.</span>
     </label>
 
+    <h3 class="payh payh-secondary">Other payment options</h3>
     <label class="popt on" id="optCod">
       <input type="radio" name="pay" value="COD" checked>
       <span class="pi"><svg><use href="#i-cash"/></svg></span>

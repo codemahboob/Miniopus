@@ -1,4 +1,4 @@
-/* Tokens measured from the Flipkart mobile product page */
+/* Tokens measured from the marketplace mobile product page */
 :root{
   --ink:#333; --muted:#707070; --green:#008042; --blue:#1162f2; --dark:#1f1f1f;
   --hdr:#d8effe; --row-blue:#eef7ff; --grey:#f5f5f5; --line:#e8e8e8; --bd:#d6d6d6; --page:#f1f2f4; --red:#d32f2f;
@@ -297,7 +297,7 @@ b,strong{font-weight:700}
 .policy-main ul{padding-left:20px;list-style:disc}
 .policy-main .updated{color:var(--muted);font-size:12px}
 
-/* Requested checkout and Flipkart-style details */
+/* Requested checkout and marketplace-style details */
 .rating-badge{position:absolute;z-index:3;left:8px;bottom:18px;display:flex;align-items:center;gap:4px;padding:5px 9px;background:#fff;border-radius:6px;box-shadow:0 1px 5px #0002;font-size:12px;color:#333}
 .rating-badge b{font-weight:800}.rating-badge span{color:#168447;font-size:14px}.rating-badge i{height:15px;border-left:1px solid #d6d6d6;margin:0 4px;font-style:normal}.rating-badge em{font-style:normal;color:#666}
 #mainBar .btn-y{font-size:14px}
@@ -314,3 +314,25 @@ b,strong{font-weight:700}
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+/* Payment step: compact marketplace-style payment layout */
+.payment-pane{background:var(--page);padding-top:0;padding-bottom:92px}
+.pay-secure-head{display:flex;align-items:center;justify-content:space-between;background:#fff;padding:16px 16px 14px;border-bottom:1px solid var(--line)}
+.pay-secure-head small{display:block;color:var(--muted);font-size:12px;margin-bottom:2px}
+.pay-secure-head h2{font-size:19px;line-height:1.2;font-weight:700}
+.secure-pill{background:#f3f4f6;color:#555;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:700;white-space:nowrap}
+.payment-pane .paytot{margin:14px 16px 12px;padding:17px 16px;border:0;border-radius:12px;background:#eef3ff;color:#315ec8;font-size:15px}
+.payment-pane .paytot b{font-size:22px;color:#315ec8}
+.pay-offer{display:flex;align-items:center;gap:10px;margin:0 16px 14px;padding:15px 16px;border-radius:12px;background:#e8f7ee;color:#16733b}
+.pay-offer b{font-size:15px;white-space:nowrap}
+.pay-offer span{font-size:13px}
+.payment-pane .payh{font-size:15px;padding:13px 16px;background:transparent;margin:0;color:#333}
+.payment-pane .popt{margin:0 16px 10px;border:1px solid var(--bd);border-radius:14px;padding:16px;background:#fff;min-height:78px}
+.payment-pane .popt.on{border:1.5px solid var(--blue)}
+.payment-pane .pt b{font-size:15px}
+.payment-pane .pt small{font-size:12px}
+.payment-pane .pi{border-radius:9px;background:#f4f6fa}
+.payment-pane .pd{font-size:12px}
+.payment-pane .payh-secondary{padding-top:7px}
+.payment-pane .err{margin:8px 16px 0}
+.payment-pane .bar{box-shadow:0 -1px 0 #e6e6e6,0 -4px 12px rgba(0,0,0,.05)}
