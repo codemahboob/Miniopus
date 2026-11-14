@@ -215,7 +215,7 @@ $("#vpd").onclick = () => $("#priceDetails").scrollIntoView({ behavior: "smooth"
 $("#toPay").onclick = () => go("payment");
 
 // ----- step 3: payment (Razorpay / COD) -----
-$('input[name="pay"]').forEach((r) =>
+$$('input[name="pay"]').forEach((r) =>
   r.addEventListener("change", () => {
     if (r.value === "COD" && STORE.codEnabled !== true) {
       r.checked = false;
@@ -232,7 +232,7 @@ $('input[name="pay"]').forEach((r) =>
 function renderPayment() {
   $("#payErr").textContent = "";
   if (STORE.codEnabled !== true && pay === "COD") pay = "RAZORPAY";
-  $('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
+  $$('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
   $("#optPrepaid").classList.toggle("on", pay === "RAZORPAY");
   $("#optCod").classList.toggle("on", pay === "COD" && STORE.codEnabled === true);
   render();
@@ -392,7 +392,7 @@ function showPlaced(o) {
 function resetAll() {
   placed = null; addr = null; qty = 1; pay = "RAZORPAY"; cartAdded = false;
   form.reset(); $("#cartBadge").hidden = true; $("#addBtn").textContent = "Add to cart";
-  $('input[name="pay"]').forEach((r) => (r.checked = r.value === "RAZORPAY"));
+  $$('input[name="pay"]').forEach((r) => (r.checked = r.value === "RAZORPAY"));
   $("#optPrepaid").classList.add("on"); $("#optCod").classList.remove("on");
   render();
 }
