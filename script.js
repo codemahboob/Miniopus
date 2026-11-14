@@ -75,7 +75,11 @@ function render() {
   $("#bTot").textContent = inr(total);
   $("#pMrp").textContent = inr(mrp);
   $("#pTot").textContent = inr(total);
-  $$(".payamt").forEach((e) => (e.textContent = inr(total)));
+  $(".payamt").forEach((e) => (e.textContent = inr(total)));
+  $("#payTotalAmount").textContent = inr(total);
+  $("#payBreakMrp").textContent = inr(mrp);
+  $("#payBreakDiscount").textContent = "− " + inr(pay === "RAZORPAY" ? Math.max(0, subtotal - total) : 0);
+  $("#payBreakTotal").textContent = inr(total);
   $("#placeBtn").textContent = pay === "RAZORPAY" ? `Pay ${inr(total)}` : "Place Order";
 }
 $("#qMinus").onclick = () => { qty = Math.max(1, qty - 1); render(); };
@@ -232,11 +236,27 @@ $$('input[name="pay"]').forEach((r) =>
 function renderPayment() {
   $("#payErr").textContent = "";
   if (STORE.codEnabled !== true && pay === "COD") pay = "RAZORPAY";
-  $$('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
+  $('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
   $("#optPrepaid").classList.toggle("on", pay === "RAZORPAY");
   $("#optCod").classList.toggle("on", pay === "COD" && STORE.codEnabled === true);
+  $("#optCod").classList.toggle("is-disabled", STORE.codEnabled !== true);
+  $("#optCod").setAttribute("aria-disabled", String(STORE.codEnabled !== true));
+  $("#optCod .pt small").textContent = STORE.codEnabled === true ? "Pay in cash when your order arrives" : "Currently Unavailable";
   render();
 }
+
+$("#totalToggle").addEventListener("click", () => {
+  const button = $("#totalToggle"), panel = $("#paymentPriceDetails");
+  const expanded = button.getAttribute("aria-expanded") !== "true";
+  button.setAttribute("aria-expanded", String(expanded));
+  panel.hidden = !expanded;
+});
+$("#recommendedToggle").addEventListener("click", () => {
+  const button = $("#recommendedToggle"), panel = $("#recommendedDetails");
+  const expanded = button.getAttribute("aria-expanded") !== "true";
+  button.setAttribute("aria-expanded", String(expanded));
+  panel.hidden = !expanded;
+});
 
 function loadRazorpay() {
   if (window.Razorpay) return Promise.resolve();
