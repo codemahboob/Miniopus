@@ -76,10 +76,10 @@ function render() {
   $("#pMrp").textContent = inr(mrp);
   $("#pTot").textContent = inr(total);
   $$(".payamt").forEach((e) => (e.textContent = inr(total)));
-  $("#payTotalAmount").textContent = inr(total);
-  $("#payBreakMrp").textContent = inr(mrp);
-  $("#payBreakDiscount").textContent = "− " + inr(pay === "RAZORPAY" ? Math.max(0, subtotal - total) : 0);
-  $("#payBreakTotal").textContent = inr(total);
+  if ($("#payTotalAmount")) $("#payTotalAmount").textContent = inr(total);
+  if ($("#payBreakMrp")) $("#payBreakMrp").textContent = inr(mrp);
+  if ($("#payBreakDiscount")) $("#payBreakDiscount").textContent = "− " + inr(pay === "RAZORPAY" ? Math.max(0, subtotal - total) : 0);
+  if ($("#payBreakTotal")) $("#payBreakTotal").textContent = inr(total);
   $("#placeBtn").textContent = pay === "RAZORPAY" ? `Pay ${inr(total)}` : "Place Order";
 }
 $("#qMinus").onclick = () => { qty = Math.max(1, qty - 1); render(); };
@@ -245,13 +245,13 @@ function renderPayment() {
   render();
 }
 
-$("#totalToggle").addEventListener("click", () => {
+if ($("#totalToggle") && $("#paymentPriceDetails")) $("#totalToggle").addEventListener("click", () => {
   const button = $("#totalToggle"), panel = $("#paymentPriceDetails");
   const expanded = button.getAttribute("aria-expanded") !== "true";
   button.setAttribute("aria-expanded", String(expanded));
   panel.hidden = !expanded;
 });
-$("#recommendedToggle").addEventListener("click", () => {
+if ($("#recommendedToggle") && $("#recommendedDetails")) $("#recommendedToggle").addEventListener("click", () => {
   const button = $("#recommendedToggle"), panel = $("#recommendedDetails");
   const expanded = button.getAttribute("aria-expanded") !== "true";
   button.setAttribute("aria-expanded", String(expanded));
