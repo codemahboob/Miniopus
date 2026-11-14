@@ -17,7 +17,7 @@ function _addDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return 
 function estimateDelivery() {
   return `${_addDays(STORE.deliveryMinDays).toLocaleDateString("en-IN", _fmt)} – ${_addDays(STORE.deliveryMaxDays).toLocaleDateString("en-IN", _fmt)}`;
 }
-// "30 Oct"  (Flipkart shows "Delivery by 30 Oct")
+// "30 Oct"  (marketplace shows "Delivery by 30 Oct")
 function deliveryBy() { return _addDays(STORE.deliveryMaxDays).toLocaleDateString("en-IN", _fmt); }
 
 if (typeof module !== "undefined") module.exports = { STORE, estimateDelivery, deliveryBy };
