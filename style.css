@@ -1,4 +1,4 @@
-/* Tokens measured from the Flipkart mobile product page */
+/* Mobile shopping page design tokens */
 :root{
   --ink:#333; --muted:#707070; --green:#008042; --blue:#1162f2; --dark:#1f1f1f;
   --hdr:#d8effe; --row-blue:#eef7ff; --grey:#f5f5f5; --line:#e8e8e8; --bd:#d6d6d6; --page:#f1f2f4; --red:#d32f2f;
@@ -297,7 +297,7 @@ b,strong{font-weight:700}
 .policy-main ul{padding-left:20px;list-style:disc}
 .policy-main .updated{color:var(--muted);font-size:12px}
 
-/* Requested checkout and Flipkart-style details */
+/* Requested checkout and product-page details */
 .rating-badge{position:absolute;z-index:3;left:8px;bottom:18px;display:flex;align-items:center;gap:4px;padding:5px 9px;background:#fff;border-radius:6px;box-shadow:0 1px 5px #0002;font-size:12px;color:#333}
 .rating-badge b{font-weight:800}.rating-badge span{color:#168447;font-size:14px}.rating-badge i{height:15px;border-left:1px solid #d6d6d6;margin:0 4px;font-style:normal}.rating-badge em{font-style:normal;color:#666}
 #mainBar .btn-y{font-size:14px}
@@ -314,3 +314,9 @@ b,strong{font-weight:700}
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
+
+/* COD remains visible but unavailable while STORE.codEnabled is false. */
+#optCod.is-disabled{opacity:.55;cursor:not-allowed;background:#f7f7f7;border-color:var(--bd)}
+#optCod.is-disabled .rad{border-color:#c9c9c9}
+#optCod.is-disabled .pd{display:none}

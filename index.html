@@ -277,21 +277,20 @@
 
   <!-- STEP 3 · Payment -->
   <section class="pane" id="p-payment" hidden>
-    <div class="card paytot"><span>Total Amount</span><b id="payTot"></b></div>
     <h3 class="payh">Choose payment method</h3>
 
     <label class="popt" id="optPrepaid">
-      <input type="radio" name="pay" value="RAZORPAY">
+      <input type="radio" name="pay" value="RAZORPAY" checked>
       <span class="pi"><svg><use href="#i-upi"/></svg></span>
-      <span class="pt"><b>Pay Online — Get 5% off</b><small>UPI, cards, net banking and supported wallets via Razorpay</small></span>
+      <span class="pt"><b>UPI — Get 5% off</b><small>Pay securely using UPI via Razorpay</small></span>
       <span class="rad" aria-hidden="true"></span>
       <span class="pd">Secure online checkout. Your order is confirmed after Razorpay payment verification. Pay <b class="payamt"></b>.</span>
     </label>
 
-    <label class="popt on" id="optCod">
-      <input type="radio" name="pay" value="COD" checked>
+    <label class="popt is-disabled" id="optCod" aria-disabled="true">
+      <input type="radio" name="pay" value="COD" disabled>
       <span class="pi"><svg><use href="#i-cash"/></svg></span>
-      <span class="pt"><b>Cash on Delivery</b><small>Pay in cash when your order arrives</small></span>
+      <span class="pt"><b>Cash on Delivery</b><small>Currently Unavailable</small></span>
       <span class="rad" aria-hidden="true"></span>
       <span class="pd">Keep <b class="payamt"></b> ready in cash for the delivery partner.</span>
     </label>

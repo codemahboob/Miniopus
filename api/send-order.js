@@ -37,6 +37,7 @@ module.exports = async (req, res) => {
   const email = "";
   const product = await getProductSettings();
   const prepaid = b.payment === 'RAZORPAY';
+  if (!prepaid && STORE.codEnabled !== true) return res.status(403).json({ error: 'Cash on Delivery is currently unavailable. Please pay using UPI.' });
   const razorpayKeyId = process.env.RAZORPAY_KEY_ID;
   const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET;
   if (prepaid) {

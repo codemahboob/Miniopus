@@ -44,7 +44,7 @@ $("#year").textContent = new Date().getFullYear();
 $("#byOut").textContent = deliveryBy();
 $("#sBy").textContent = deliveryBy();
 
-let qty = 1, addr = null, pay = "COD", placed = null, cartAdded = false, pin = "";
+let qty = 1, addr = null, pay = "RAZORPAY", placed = null, cartAdded = false, pin = "";
 
 function toast(msg) {
   const t = $("#toast");
@@ -75,12 +75,17 @@ function render() {
   $("#bTot").textContent = inr(total);
   $("#pMrp").textContent = inr(mrp);
   $("#pTot").textContent = inr(total);
-  $("#payTot").textContent = inr(total);
   $$(".payamt").forEach((e) => (e.textContent = inr(total)));
   $("#placeBtn").textContent = pay === "RAZORPAY" ? `Pay ${inr(total)}` : "Place Order";
 }
 $("#qMinus").onclick = () => { qty = Math.max(1, qty - 1); render(); };
 $("#qPlus").onclick = () => { qty = Math.min(10, qty + 1); render(); };
+const codRadio = $('#optCod input[name="pay"]');
+codRadio.disabled = STORE.codEnabled !== true;
+$('#optCod').classList.toggle('is-disabled', codRadio.disabled);
+$('#optCod').setAttribute('aria-disabled', String(codRadio.disabled));
+$('#optCod .pt small').textContent = codRadio.disabled ? 'Currently Unavailable' : 'Pay in cash when your order arrives';
+
 render();
 
 // ---------- gallery ----------
@@ -210,15 +215,28 @@ $("#vpd").onclick = () => $("#priceDetails").scrollIntoView({ behavior: "smooth"
 $("#toPay").onclick = () => go("payment");
 
 // ----- step 3: payment (Razorpay / COD) -----
-$$('input[name="pay"]').forEach((r) =>
+$('input[name="pay"]').forEach((r) =>
   r.addEventListener("change", () => {
+    if (r.value === "COD" && STORE.codEnabled !== true) {
+      r.checked = false;
+      $("#optPrepaid input").checked = true;
+      pay = "RAZORPAY";
+      return;
+    }
     pay = r.value;
     $("#optPrepaid").classList.toggle("on", pay === "RAZORPAY");
     $("#optCod").classList.toggle("on", pay === "COD");
     render();
   })
 );
-function renderPayment() { $("#payErr").textContent = ""; render(); }
+function renderPayment() {
+  $("#payErr").textContent = "";
+  if (STORE.codEnabled !== true && pay === "COD") pay = "RAZORPAY";
+  $('input[name="pay"]').forEach((r) => { r.checked = r.value === pay; });
+  $("#optPrepaid").classList.toggle("on", pay === "RAZORPAY");
+  $("#optCod").classList.toggle("on", pay === "COD" && STORE.codEnabled === true);
+  render();
+}
 
 function loadRazorpay() {
   if (window.Razorpay) return Promise.resolve();
@@ -256,7 +274,8 @@ $("#placeBtn").onclick = async () => {
         order_id: order.razorpayOrderId,
         prefill: { name: order.customerName || addr.name, contact: order.customerPhone || addr.phone, email: order.email || "" },
         theme: { color: "#2874f0" },
-        modal: { ondismiss: () => { $("#payErr").textContent = "Payment was not completed. You can try again or choose Cash on Delivery."; } },
+        config: { display: { blocks: { upi: { name: "Pay via UPI", instruments: [{ method: "upi" }] } }, sequence: ["block.upi"], hide: [{ method: "cod" }], preferences: { show_default_blocks: false } } },
+        modal: { ondismiss: () => { $("#payErr").textContent = "UPI payment was not completed. Please try again."; } },
         handler: async (response) => {
           btn.disabled = true; btn.textContent = "Verifying payment…";
           try {
@@ -268,7 +287,7 @@ $("#placeBtn").onclick = async () => {
           } finally { btn.disabled = false; if (!placed) render(); }
         }
       });
-      checkout.on("payment.failed", (event) => { $("#payErr").textContent = event.error?.description || "Payment failed. Please try again or choose Cash on Delivery."; });
+      checkout.on("payment.failed", (event) => { $("#payErr").textContent = event.error?.description || "UPI payment failed. Please try again."; });
       checkout.open();
       return;
     }
@@ -371,10 +390,10 @@ function showPlaced(o) {
 
 
 function resetAll() {
-  placed = null; addr = null; qty = 1; pay = "COD"; cartAdded = false;
+  placed = null; addr = null; qty = 1; pay = "RAZORPAY"; cartAdded = false;
   form.reset(); $("#cartBadge").hidden = true; $("#addBtn").textContent = "Add to cart";
-  $$('input[name="pay"]').forEach((r) => (r.checked = r.value === "COD"));
-  $("#optPrepaid").classList.remove("on"); $("#optCod").classList.add("on");
+  $('input[name="pay"]').forEach((r) => (r.checked = r.value === "RAZORPAY"));
+  $("#optPrepaid").classList.add("on"); $("#optCod").classList.remove("on");
   render();
 }
 $("#okClose").onclick = () => { location.replace("#"); };

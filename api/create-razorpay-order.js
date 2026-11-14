@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
-  if (!keyId || !keySecret) return res.status(503).json({ error: 'Online payment is not configured yet. Please choose Cash on Delivery.' });
+  if (!keyId || !keySecret) return res.status(503).json({ error: 'Online payment is not configured yet. Please try again later.' });
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
   const qty = Math.min(Math.max(parseInt(body.qty, 10) || 1, 1), 10);
@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
     const result = await response.json().catch(() => ({}));
     if (!response.ok || !result.id) {
       console.error('Razorpay order creation failed:', response.status, result.error?.code || 'unknown');
-      return res.status(502).json({ error: 'Could not start online payment. Please try again or choose Cash on Delivery.' });
+      return res.status(502).json({ error: 'Could not start online payment. Please try again ' });
     }
     return res.status(200).json({ keyId, razorpayOrderId: result.id, amount: result.amount, currency: result.currency, productName: product.productName, brand: STORE.brand, customerName: name, customerPhone: phone, email: '' });
   } catch (error) {

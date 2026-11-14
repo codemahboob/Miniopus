@@ -6,6 +6,7 @@ const STORE = {
   productName: "StainRol Stain Remover Roll-On (50 ml) for Clothes | Instant Spot Cleaner",
   price: 490,          // selling price per unit, INR
   mrp: 999,            // crossed-out price per unit, INR
+  codEnabled: false,   // set true to re-enable the existing COD checkout flow
   deliveryMinDays: 4,
   deliveryMaxDays: 6,
   orderPrefix: "OD",
@@ -17,7 +18,7 @@ function _addDays(n) { const d = new Date(); d.setDate(d.getDate() + n); return 
 function estimateDelivery() {
   return `${_addDays(STORE.deliveryMinDays).toLocaleDateString("en-IN", _fmt)} – ${_addDays(STORE.deliveryMaxDays).toLocaleDateString("en-IN", _fmt)}`;
 }
-// "30 Oct"  (Flipkart shows "Delivery by 30 Oct")
+// Delivery date label shown in the product and checkout pages.
 function deliveryBy() { return _addDays(STORE.deliveryMaxDays).toLocaleDateString("en-IN", _fmt); }
 
 if (typeof module !== "undefined") module.exports = { STORE, estimateDelivery, deliveryBy };
