@@ -4,7 +4,7 @@ Plain HTML/CSS/JS plus one tiny serverless function. No framework, no build step
 **zero npm dependencies**. Page weight is about 0.6 MB, mostly the photos.
 
 The page uses a familiar mobile shopping layout. **Buy at ₹…** opens a 3-step checkout:
-**Address → Order summary → Payment** (Razorpay online payment, or Cash on Delivery). Online payments are created and verified on the server; the Razorpay secret is never sent to the browser.
+**Address → Order summary → Payment** (UPI through Razorpay; Cash on Delivery remains in the code but is disabled by default). Online payments are created and verified on the server; the Razorpay secret is never sent to the browser.
 When the customer places an order, `api/send-order.js` emails you
 the full order and address through [Resend](https://resend.com). You ship it yourself.
 If the customer typed an email, they get a confirmation too.
@@ -38,7 +38,7 @@ If the customer typed an email, they get a confirmation too.
 - **Photos:** replace files in `images/` (square, about 900 px). Add or remove `<img>` lines inside `#slides` in `index.html`.
 - **Title, description, offers, FAQ:** edit the text in `index.html`.
 - **Ratings and reviews:** the numbers and the three reviews are **samples**. Replace them with real ratings and reviews from your own customers before going live.
-- **Online payments:** configure `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in Vercel environment variables (see Razorpay setup below). Keep the secret out of all browser files. COD continues to work without Razorpay keys.
+- **Online payments:** configure `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in Vercel environment variables (see Razorpay setup below). Keep the secret out of all browser files. Cash on Delivery is disabled by default; set `codEnabled: true` in `config.js` to re-enable the existing COD flow.
 - **Pack sizes:** `packs` in `config.js` (1, 2, 3 units by default).
 - **Search box and cart icon** in the header copy the mobile shopping layout. Search is decorative on a one-product store.
 - **Policies:** `privacy-policy.html` and `return-refund.html`, with your support email.
