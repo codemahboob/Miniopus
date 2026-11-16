@@ -2,9 +2,9 @@
 module.exports = async (_req, res) => {
   res.setHeader("Cache-Control", "no-store");
   const fallback = {
-    productName: "StainRol Stain Remover Roll-On (50 ml) for Clothes | Instant Spot Cleaner",
-    description: "StainRol is a pocket-size roll-on cleaner for quick spot treatment. Roll it over the stain, let it work for a few minutes, then wash as usual. The no-mess roll-on tip lets you apply it only where you need it. Patch-test on a hidden spot first for delicate or dark fabrics.",
-    imageUrl: "/images/photo-1.jpg", price: 490, mrp: 999, rating: 4, reviewCount: 18,
+    productName: "2-Tier Adhesive Corner Storage Shelf – 90° Bathroom & Kitchen Organizer",
+    description: "Make unused corners useful with this 2-tier adhesive corner shelf. Its compact 90° design helps organize shampoo, soap, skincare, kitchen jars, toiletries and everyday essentials while keeping counters clutter-free. Install without drilling: clean the wall, peel the adhesive backing, press the hooks firmly in place and hang the shelf. Suitable for smooth glass, ceramic tile, marble, wood, painted walls and plaster surfaces. The shelf is described as rust-resistant and waterproof. Allow the adhesive to set before loading and avoid exceeding its safe holding capacity.",
+    imageUrl: "/images/corner-shelf-1.jpg", price: 490, mrp: 999, rating: 4, reviewCount: 18,
     reviews: [
       {title:"Kaam karta hai",body:"Instagram par dekh kar order kiya tha. Pehle doubt tha, lekin use karne ke baad laga ki product sach me kaam karta hai."},
       {title:"Paisa vasool",body:"Price ke hisaab se quality bahut achhi lagi. Ek bottle kaafi time chal jati hai aur results bhi genuine hain."},
