@@ -2,7 +2,7 @@
 // Read by the browser (script.js) AND the serverless function (api/send-order.js),
 // so price and delivery days are always identical on the page and in your order email.
 const STORE = {
-  brand: "Miniopus",
+  brand: "StainRol",
   productName: "2-Tier Adhesive Corner Storage Shelf – 90° Bathroom & Kitchen Organizer",
   price: 490,          // selling price per unit, INR
   mrp: 999,            // crossed-out price per unit, INR
