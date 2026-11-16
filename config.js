@@ -2,8 +2,8 @@
 // Read by the browser (script.js) AND the serverless function (api/send-order.js),
 // so price and delivery days are always identical on the page and in your order email.
 const STORE = {
-  brand: "StainRol",
-  productName: "StainRol Stain Remover Roll-On (50 ml) for Clothes | Instant Spot Cleaner",
+  brand: "Miniopus",
+  productName: "2-Tier Adhesive Corner Storage Shelf – 90° Bathroom & Kitchen Organizer",
   price: 490,          // selling price per unit, INR
   mrp: 999,            // crossed-out price per unit, INR
   codEnabled: false,   // set true to re-enable the existing COD checkout flow
